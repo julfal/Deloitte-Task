@@ -1,3 +1,4 @@
+/* General Styles */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -5,67 +6,87 @@
     font-family: Arial, sans-serif;
 }
 
+/* Body background */
 body {
+    background: url('/images/Deloitte Digital.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
+    position: relative;
+    z-index: -1;
 }
 
+/* Container Styling */
 .container {
     width: 100%;
     max-width: 600px;
-    background-color: #fff;
+    background-color: rgba(0, 0, 0, 0.85);  /* Black with opacity for transparency */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+    z-index: 10;
+    position: relative;
 }
 
+/* Form Header */
 h1 {
     text-align: center;
-    margin-bottom: 20px;
+    color: #00a859; /* Deloitte Digital green */
+    margin-bottom: 50px;
 }
 
+/* Form Label Styling */
 form label {
     display: block;
     margin: 10px 0 5px;
+    color: #ffffff; /* White for labels */
 }
 
+/* Input, Select, and Textarea Styling */
 form input, form select, form textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #00a859; /* Green borders */
     border-radius: 4px;
+    background-color: #ffffff; /* White background for inputs */
+    color: #000000;  /* Black text inside inputs */
 }
 
+/* Button Styling */
 button {
     width: 100%;
     padding: 10px;
-    background-color: #28a745;
-    color: white;
+    background-color: #00a859; /* Secondary color: Green */
+    color: white; /* Button text color */
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: #008b47;  /* Darker green on hover */
 }
 
-.hidden {
-    display: none;
-}
-
+/* Success and Error Messages */
 #successMessage {
-    color: green;
+    color: #00a859; /* Green for success */
     margin-top: 10px;
     text-align: center;
 }
 
 #errorMessage {
-    color: red;
+    color: red; /* Red for error */
     margin-top: 10px;
     text-align: center;
+}
+
+/* Hidden Elements */
+.hidden {
+    display: none;
 }

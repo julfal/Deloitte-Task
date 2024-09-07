@@ -1,4 +1,6 @@
+const db = require('./database');  // Import the SQLite database connection
 require('dotenv').config({ path: './details.env'});  // Load environment variables from the .env file
+
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
@@ -25,37 +27,47 @@ app.post('/schedule', (req, res) => {
     // Set contactInfo based on available data
     const contactInfo = email || mobile; // Prefer email if provided
 
-    // Create a transporter for sending emails
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER,  // Use environment variable for email username
-            pass: process.env.EMAIL_PASS   // Use environment variable for email password
-        }
-    });
+    // Insert the form data into the database
+    const sql = `INSERT INTO appointments (name, surname, mobile, email, appointmentDateTime, address, product, comments)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    const params = [name, surname, mobile, email, appointmentDateTime, address, product, comments];
 
-    console.log('Email User:', process.env.EMAIL_USER);
-    console.log('Email Pass:', process.env.EMAIL_PASS);
-
-    // Email content
-    let mailOptions = {
-        from: process.env.EMAIL_USER,  // Use your email address stored in environment variables
-        to: contactInfo,  // The recipient's email address
-        subject: 'Appointment Scheduled',
-        text: `Hello ${name},\n\nYour appointment for ${product} is scheduled at ${appointmentDateTime} at ${address}.\n\nComments: ${comments}\n\nThank you!`
-    };
-
-    // Send the email
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log('Error sending email:', error);
-            res.status(500).send('Error sending email');
+    db.run(sql, params, function(err) {
+        if (err) {
+            console.log('Error inserting data into the database:', err.message);
+            res.status(500).send('Error storing appointment.');
         } else {
-            console.log('Email sent: ' + info.response);
-            res.status(200).send('Appointment scheduled successfully and email sent!');
+            console.log(`Appointment stored with ID: ${this.lastID}`);
+
+            // Email sending logic (as before)
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.EMAIL_USER,  // Use environment variable for email username
+                    pass: process.env.EMAIL_PASS   // Use environment variable for email password
+                }
+            });
+
+            let mailOptions = {
+                from: process.env.EMAIL_USER,  // Use your email address stored in environment variables
+                to: contactInfo,  // The recipient's email address
+                subject: 'Appointment Scheduled',
+                text: `Hello ${name},\n\nYour appointment for ${product} is scheduled at ${appointmentDateTime} at ${address}.\n\nComments: ${comments}\n\nThank you!`
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log('Error sending email:', error);
+                    res.status(500).send('Error sending email.');
+                } else {
+                    console.log('Email sent: ' + info.response);
+                    res.status(200).send('Appointment scheduled and stored successfully.');
+                }
+            });
         }
     });
 });
+
 
 // Start the server
 app.listen(port, () => {

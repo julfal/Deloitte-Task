@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Scheduler</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Schedule an Appointment</h1>
+        <form id="appointmentForm">
+            <label for="name">Name*:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="surname">Surname*:</label>
+            <input type="text" id="surname" name="surname" required>
+
+            <label for="mobile">Mobile Number:</label>
+            <input type="tel" id="mobile" name="mobile">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+
+            <label for="appointmentDateTime">Appointment Date & Time*:</label>
+            <input type="datetime-local" id="appointmentDateTime" name="appointmentDateTime" required>
+
+            <label for="address">Address*:</label>
+            <textarea id="address" name="address" required></textarea>
+
+            <label for="product">Product Interested In*:</label>
+            <select id="product" name="product" required>
+                <option value="home">Home Insurance Policies</option>
+                <option value="motor">Motor Insurance Policies</option>
+                <option value="health">Health Insurance Policies</option>
+            </select>
+
+            <label for="comments">Comments (Optional):</label>
+            <textarea id="comments" name="comments"></textarea>
+
+            <button type="submit">Schedule Appointment</button>
+        </form>
+
+        <div id="successMessage" class="hidden">Appointment Scheduled Successfully!</div>
+        <div id="errorMessage" class="hidden">Please provide either a mobile number or an email address.</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
